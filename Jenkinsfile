@@ -1,17 +1,13 @@
-#!/usr/bin/env groovy
 node {
-
-stage('checkout code') {
-        steps {
-            checkout scm
-        }
-    }
-
-stage("maven build") {
-    sh "mvn clean install"
+  stage("Clone the project") {
+    git branch: 'main', url: 'https://github.com/thangap-cloud/k8s-local-jenkins-springboot-ci.git'
   }
 
-stage("docker build") {
-    sh "docker build -t app:1.0"
+  stage("Compilation") {
+    sh "./mvnw clean install -DskipTests"
   }
+
+   stage("docker Build") {
+    sh "docker build -t app:v1 ."
+  } 
 }
