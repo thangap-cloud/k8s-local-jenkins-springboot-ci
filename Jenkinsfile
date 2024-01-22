@@ -35,7 +35,7 @@ pipeline {
         }
       }
     }
-    stage('Build-Docker-Image') {
+    stage('Test-Docker-in Docker') {
       steps {
         container('docker') {
           sh 'sleep 600'
