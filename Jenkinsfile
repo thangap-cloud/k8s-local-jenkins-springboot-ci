@@ -12,18 +12,13 @@ pipeline {
             - cat
             tty: true
           - name: docker
-            image: docker:latest
-            command:
-            - cat
-            tty: true
-            volumeMounts:
-             - mountPath: /var/run/docker.sock
-               name: docker-sock
-          volumes:
-          - name: docker-sock
-            hostPath:
-              path: /var/run/docker.sock    
-        '''
+            image: docker:19.03.1-dind
+            securityContext:
+              privileged: true
+            env:
+              - name: DOCKER_TLS_CERTDIR
+                value: ""  
+                '''
     }
   }
   stages {
@@ -38,7 +33,7 @@ pipeline {
     stage('Test-Docker-in Docker') {
       steps {
         container('docker') {
-          sh 'sleep 600'
+          sh 'sleep 10'
         }
       }
     }
