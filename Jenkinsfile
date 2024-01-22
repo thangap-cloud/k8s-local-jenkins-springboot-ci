@@ -45,24 +45,16 @@ pipeline {
       }
     }
   
-    stage('Login-Into-Docker') {
-          
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+    stage('Login-Into-Docker and Push') {         
+      steps {   
         container('docker') {
-          sh 'docker login -u $USERNAME -p $PASSWORD'
+            withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+            sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+            sh 'docker push thangap05/demo-liefbit:1.0'
       }
     }
     }
     }
-     stage('Push-Images-Docker-to-DockerHub') {
-        
-      steps {
-        container('docker') {
-          sh 'docker push thangap05/demo-liefbit:1.0'
-      }
-    }
-     }
   }
     post {
       always {
