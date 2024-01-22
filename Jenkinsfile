@@ -30,25 +30,12 @@ pipeline {
         }
       }
     }
-    stage('Test-Docker-in Docker') {
-      steps {
-        container('docker') {
-          sh 'sleep 10'
-        }
-      }
-    }
-    stage('Build-Docker-Image') {
-      steps {
-        container('docker') {
-          sh 'docker build -t thangap05/demo-liefbit:l.0 .'
-        }
-      }
-    }
-  
-    stage('Login-Into-Docker and Push') {         
+
+    stage('Docker Build and Push') {         
       steps {   
         container('docker') {
             withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+            sh 'docker build -t thangap05/demo-liefbit:1.0 .'
             sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
             sh 'docker push thangap05/demo-liefbit:1.0'
       }
