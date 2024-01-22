@@ -40,16 +40,15 @@ pipeline {
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
-          sh 'docker build -t app:v1 .'
+          sh 'docker build -t thangap05/demo-liefbit:l.0 .'
         }
       }
     }
   
     stage('Login-Into-Docker') {
-          withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-
-
+          
       steps {
+        withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
         container('docker') {
           sh 'docker login -u $USERNAME -p $PASSWORD'
       }
@@ -57,9 +56,10 @@ pipeline {
     }
     }
      stage('Push-Images-Docker-to-DockerHub') {
+        
       steps {
         container('docker') {
-          sh 'docker push thangap05/demo-liefbit:latest'
+          sh 'docker push thangap05/demo-liefbit:1.0'
       }
     }
      }
