@@ -38,6 +38,13 @@ pipeline {
     stage('Build-Docker-Image') {
       steps {
         container('docker') {
+          sh 'sleep 600'
+        }
+      }
+    }
+    stage('Build-Docker-Image') {
+      steps {
+        container('docker') {
           sh 'docker build -t app:v1 .'
         }
       }
